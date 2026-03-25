@@ -84,7 +84,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
   </div>
 
   </div>
@@ -139,11 +139,16 @@
 <li><code>major</code>：关键字类型</li>
 </ul>
 <hr>
+<h3 id="索引创建过程示意"><a href="#索引创建过程示意" class="headerlink" title="索引创建过程示意"></a>索引创建过程示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/curl%E5%AE%9E%E6%88%98.png" class="" title="索引创建示意图">
+
+<hr>
 <h2 id="8-插入文档"><a href="#8-插入文档" class="headerlink" title="8. 插入文档"></a>8. 插入文档</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/1&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Alice&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/2&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Bob&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 24,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;mechanical&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/3&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Cindy&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查询结果示意"><a href="#查询结果示意" class="headerlink" title="查询结果示意"></a>查询结果示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/%E6%9F%A5%E8%AF%A2%E6%BC%94%E7%A4%BA.png" class="" title="查询示意图">
 
 <hr>
 <h2 id="9-查询示例"><a href="#9-查询示例" class="headerlink" title="9. 查询示例"></a>9. 查询示例</h2><h3 id="9-1-查询全部数据"><a href="#9-1-查询全部数据" class="headerlink" title="9.1 查询全部数据"></a>9.1 查询全部数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;match_all&quot;: &#123;&#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
@@ -165,7 +170,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" data-id="cmn5dtd6d000j6oui2zpf3kul" data-title="Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" data-id="cmn5fki7700006oui338b2ova" data-title="Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -325,7 +330,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/" data-id="cmn5dtd5z00006oui8bkg4lpz" data-title="RabbitMQ入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/" data-id="cmn5fki7b00016ouic0jb4e59" data-title="RabbitMQ入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -404,7 +409,7 @@ get name
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/" data-id="cmn5dtd6200016oui8s6c309u" data-title="Redis 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/" data-id="cmn5fki7e00046ouih9l11g4s" data-title="Redis 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -446,7 +451,7 @@ get name
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/" data-id="cmn5dtd6c000i6oui8d9sc9t0" data-title="我的第一篇HEXO博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/" data-id="cmn5fki7f00056oui5sef48es" data-title="我的第一篇HEXO博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -499,7 +504,7 @@ get name
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/16/hello-world/" data-id="cmn5dtd6e000l6oui2etkh2ac" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/hello-world/" data-id="cmn5fki7q000w6ouidsa21zbr" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -521,7 +526,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li></ul>
     </div>
   </div>
 
