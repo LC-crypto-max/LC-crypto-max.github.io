@@ -77,6 +77,188 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vibe-coding实战" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" class="article-date">
+  <time class="dt-published" datetime="2026-04-08T08:11:50.000Z" itemprop="datePublished">2026-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="从0到1构建可控AI工程体系：AGENTS-Skill-驱动的实战"><a href="#从0到1构建可控AI工程体系：AGENTS-Skill-驱动的实战" class="headerlink" title="从0到1构建可控AI工程体系：AGENTS + Skill 驱动的实战"></a>从0到1构建可控AI工程体系：AGENTS + Skill 驱动的实战</h1><h2 id="一、核心思路（重点）"><a href="#一、核心思路（重点）" class="headerlink" title="一、核心思路（重点）"></a>一、核心思路（重点）</h2><p>我把 AI 开发分成三层：</p>
+<pre><code class="text">AI工程体系
+├── AGENTS.md          # 规则层（约束AI行为）
+├── .agents/skills     # 能力层（定义AI怎么写代码）
+└── .codex/config.toml # 控制层（AI运行方式）
+
+📌 架构说明
+层级	文件	作用
+规则层	AGENTS.md	定义项目规范
+能力层	Skill	定义AI如何写代码
+控制层	config.toml	控制AI运行行为
+ 三、项目结构
+hello-code
+├── src
+├── pom.xml
+├── AGENTS.md
+├── README.md
+├── docker-compose.yml
+├── .agents
+│   └── skills
+│       └── springboot-backend-standard
+│           └── SKILL.md
+└── .codex
+    └── config.toml
+ 四、AGENTS.md（项目规则）
+
+AGENTS.md 的核心作用是：
+
+ 约束 AI 生成代码必须符合工程规范
+
+示例：
+
+## 项目定位
+用于面试展示的 Spring Boot 后端系统
+
+## 技术栈
+- Java 17
+- Spring Boot 3.3.x
+- JPA + H2
+- RabbitMQ
+- Elasticsearch
+
+## 代码规范
+- 分层结构（controller/service/repository）
+- 使用统一返回 Result&lt;T&gt;
+- 必须有全局异常处理
+- DTO / VO 分离
+
+## 输出要求
+- 必须生成 README.md
+- 必须生成 demo.http
+- 必须提供演示步骤
+ 五、Skill 设计（核心亮点）
+
+路径：
+
+.agents/skills/springboot-backend-standard/SKILL.md
+🔥 Skill 的本质
+
+👉 Skill = 给 AI 定义“写代码的方法论”
+
+📌 Skill 示例
+---
+name: springboot-backend-standard
+description: 生成适合面试展示的Spring Boot后端项目
+---
+
+# 技术选型
+- Spring Boot 3.3.x
+- JPA + H2
+- RabbitMQ
+- Elasticsearch
+
+# 生成规则
+1. 必须可运行
+2. 必须包含 demo.http
+3. 必须包含 README.md
+4. 必须说明如何演示
+5. 保证依赖版本兼容
+
+# 输出内容
+- Controller / Service / Repository
+- 全局异常处理
+- Result 统一返回
+- 示例接口
+ 六、Codex 配置
+
+路径：
+
+.codex/config.toml
+📌 配置内容
+project_root_markers = [&quot;.git&quot;]
+
+[features]
+auto_search = true
+auto_context = true
+📌 作用说明
+标记项目根目录
+提升 AI 上下文理解能力
+让 Codex 更稳定读取 AGENTS 和 Skill
+ 七、AI 驱动开发流程
+1️⃣ 指定规则 + Skill
+请使用 springboot-backend-standard skill，
+并遵循 AGENTS.md，
+为当前项目生成检测结果接口。
+2️⃣ AI 自动生成
+
+AI 会自动生成：
+
+Controller
+Service
+Repository
+demo.http
+README
+接口示例
+3️⃣ 本地运行
+mvn spring-boot:run
+4️⃣ H2 控制台访问
+http://localhost:8080/h2-console
+5️⃣ 数据验证
+SELECT * FROM detection_result;
+📊 八、项目演示效果
+
+系统当前支持：
+
+✅ 检测结果存储
+✅ 数据查询
+✅ H2 可视化管理
+✅ HTTP 接口测试（demo.http）
+
+
+项目实际运行图如图所示
+&#123;% asset_img IDEA运行项目.png IDEA实际运行图 %&#125;
+
+示例数据：
+
+&#123;
+  &quot;defectType&quot;: &quot;crack&quot;,
+  &quot;defectLevel&quot;: &quot;high&quot;,
+  &quot;summary&quot;: &quot;检测到明显裂缝，长度约12cm&quot;
+&#125;
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" data-id="cmnqx22yh0000b4ui2h2y31a2" data-title="vibe coding实战" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Elasticsearch-入门实战：在-Ubuntu-虚拟机中搭建-ES-并完成索引与查询" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" class="article-date">
@@ -536,7 +718,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
     </div>
   </div>
 
@@ -546,7 +728,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
+      <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">AI工程</a> <a href="/tags/Codex/" style="font-size: 10px;">Codex</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 10px;">后端开发</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
     </div>
   </div>
 
@@ -555,7 +737,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -566,6 +748,10 @@ get name
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
+          </li>
         
           <li>
             <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/">Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询</a>
@@ -581,10 +767,6 @@ get name
         
           <li>
             <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/">我的第一篇HEXO博客</a>
-          </li>
-        
-          <li>
-            <a href="/2026/03/16/hello-world/">Hello World</a>
           </li>
         
       </ul>
