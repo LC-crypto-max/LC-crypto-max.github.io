@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询 | Engineering Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="1. 为什么学习 ElasticsearchElasticsearch（简称 ES）是一个基于 Lucene 的分布式搜索与分析引擎，常用于全文检索、日志分析、商品搜索和数据查询等场景。对于初学者来说，最重要的不是先背大量概念，而是先把服务跑起来，再通过“创建索引、写入文档、执行查询”建立整体认识。  2. 实验环境 Ubuntu 22.04 虚拟机 Elasticsearch 9.x curl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询">
+<meta property="og:url" content="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/index.html">
+<meta property="og:site_name" content="Engineering Notes">
+<meta property="og:description" content="1. 为什么学习 ElasticsearchElasticsearch（简称 ES）是一个基于 Lucene 的分布式搜索与分析引擎，常用于全文检索、日志分析、商品搜索和数据查询等场景。对于初学者来说，最重要的不是先背大量概念，而是先把服务跑起来，再通过“创建索引、写入文档、执行查询”建立整体认识。  2. 实验环境 Ubuntu 22.04 虚拟机 Elasticsearch 9.x curl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/curl%E5%AE%9E%E6%88%98.png">
+<meta property="og:image" content="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/%E6%9F%A5%E8%AF%A2%E6%BC%94%E7%A4%BA.png">
+<meta property="article:published_time" content="2026-03-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-25T02:34:30.147Z">
+<meta property="article:author" content="LC-crypto-max">
+<meta property="article:tag" content="Elasticsearch">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="搜索引擎">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/curl%E5%AE%9E%E6%88%98.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Engineering Notes" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Engineering Notes</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录技术成长</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://Lc-crypto-max.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Elasticsearch-入门实战：在-Ubuntu-虚拟机中搭建-ES-并完成索引与查询" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T16:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-为什么学习-Elasticsearch"><a href="#1-为什么学习-Elasticsearch" class="headerlink" title="1. 为什么学习 Elasticsearch"></a>1. 为什么学习 Elasticsearch</h2><p>Elasticsearch（简称 ES）是一个基于 Lucene 的分布式搜索与分析引擎，常用于全文检索、日志分析、商品搜索和数据查询等场景。<br>对于初学者来说，最重要的不是先背大量概念，而是先把服务跑起来，再通过“创建索引、写入文档、执行查询”建立整体认识。</p>
+<hr>
+<h2 id="2-实验环境"><a href="#2-实验环境" class="headerlink" title="2. 实验环境"></a>2. 实验环境</h2><ul>
+<li>Ubuntu 22.04 虚拟机</li>
+<li>Elasticsearch 9.x</li>
+<li>curl 命令行工具</li>
+</ul>
+<hr>
+<h2 id="3-安装-Elasticsearch"><a href="#3-安装-Elasticsearch" class="headerlink" title="3. 安装 Elasticsearch"></a>3. 安装 Elasticsearch</h2><h3 id="3-1-导入官方-GPG-key"><a href="#3-1-导入官方-GPG-key" class="headerlink" title="3.1 导入官方 GPG key"></a>3.1 导入官方 GPG key</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | <span class="built_in">sudo</span> gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg</span><br><span class="line">````</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.2 添加仓库</span></span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main&quot;</span> | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/elastic-9.x.list</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-安装-ES"><a href="#3-3-安装-ES" class="headerlink" title="3.3 安装 ES"></a>3.3 安装 ES</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install -y apt-transport-https</span><br><span class="line"><span class="built_in">sudo</span> apt-get install -y elasticsearch</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-启动-Elasticsearch"><a href="#4-启动-Elasticsearch" class="headerlink" title="4. 启动 Elasticsearch"></a>4. 启动 Elasticsearch</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> elasticsearch</span><br><span class="line"><span class="built_in">sudo</span> systemctl start elasticsearch</span><br><span class="line"><span class="built_in">sudo</span> systemctl status elasticsearch</span><br></pre></td></tr></table></figure>
+
+<p>如果状态显示 <code>active (running)</code>，说明 ES 已成功启动。</p>
+<hr>
+<h2 id="5-设置-elastic-用户密码"><a href="#5-设置-elastic-用户密码" class="headerlink" title="5. 设置 elastic 用户密码"></a>5. 设置 elastic 用户密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic</span><br></pre></td></tr></table></figure>
+
+<p>然后把密码保存为环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ELASTIC_PASSWORD=<span class="string">&#x27;你的密码&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-验证服务是否正常"><a href="#6-验证服务是否正常" class="headerlink" title="6. 验证服务是否正常"></a>6. 验证服务是否正常</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> https://localhost:9200</span><br></pre></td></tr></table></figure>
+
+<p>如果返回包含 <code>cluster_name</code>、<code>version</code> 等字段的 JSON，说明服务已运行成功。</p>
+<hr>
+<h2 id="7-创建索引"><a href="#7-创建索引" class="headerlink" title="7. 创建索引"></a>7. 创建索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X PUT <span class="string">&quot;https://localhost:9200/student&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;mappings&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;properties&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;name&quot;:  &#123; &quot;type&quot;: &quot;text&quot; &#125;,</span></span><br><span class="line"><span class="string">      &quot;age&quot;:   &#123; &quot;type&quot;: &quot;integer&quot; &#125;,</span></span><br><span class="line"><span class="string">      &quot;major&quot;: &#123; &quot;type&quot;: &quot;keyword&quot; &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个索引中定义了 3 个字段：</p>
+<ul>
+<li><code>name</code>：文本类型</li>
+<li><code>age</code>：整数类型</li>
+<li><code>major</code>：关键字类型</li>
+</ul>
+<hr>
+<h3 id="索引创建过程示意"><a href="#索引创建过程示意" class="headerlink" title="索引创建过程示意"></a>索引创建过程示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/curl%E5%AE%9E%E6%88%98.png" class="" title="索引创建示意图">
+
+<hr>
+<h2 id="8-插入文档"><a href="#8-插入文档" class="headerlink" title="8. 插入文档"></a>8. 插入文档</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/1&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Alice&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/2&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Bob&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 24,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;mechanical&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/3&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Cindy&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查询结果示意"><a href="#查询结果示意" class="headerlink" title="查询结果示意"></a>查询结果示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/%E6%9F%A5%E8%AF%A2%E6%BC%94%E7%A4%BA.png" class="" title="查询示意图">
+
+<hr>
+<h2 id="9-查询示例"><a href="#9-查询示例" class="headerlink" title="9. 查询示例"></a>9. 查询示例</h2><h3 id="9-1-查询全部数据"><a href="#9-1-查询全部数据" class="headerlink" title="9.1 查询全部数据"></a>9.1 查询全部数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;match_all&quot;: &#123;&#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-查询专业为-computer-的学生"><a href="#9-2-查询专业为-computer-的学生" class="headerlink" title="9.2 查询专业为 computer 的学生"></a>9.2 查询专业为 computer 的学生</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;term&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-3-查询年龄为-22-的学生"><a href="#9-3-查询年龄为-22-的学生" class="headerlink" title="9.3 查询年龄为 22 的学生"></a>9.3 查询年龄为 22 的学生</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;term&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;age&quot;: 22</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h2><p>通过这次实验，我完成了 Elasticsearch 单机环境的搭建，并实践了以下核心操作：</p>
+<ol>
+<li>安装并启动 ES 服务</li>
+<li>使用 HTTPS 和账号密码访问 ES</li>
+<li>创建索引和字段映射</li>
+<li>插入文档数据</li>
+<li>进行基础查询</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" data-id="cmn5fki7700006oui338b2ova" data-title="Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          vibe coding实战
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">RabbitMQ入门</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">AI工程</a> <a href="/tags/Codex/" style="font-size: 10px;">Codex</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 10px;">后端开发</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/">Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/">RabbitMQ入门</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/">Redis 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/">我的第一篇HEXO博客</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 LC-crypto-max<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

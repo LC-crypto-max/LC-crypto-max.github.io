@@ -77,6 +77,500 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-vibe-coding实战" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" class="article-date">
+  <time class="dt-published" datetime="2026-04-08T08:11:50.000Z" itemprop="datePublished">2026-04-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="从0到1构建可控AI工程体系：AGENTS-Skill-驱动的实战"><a href="#从0到1构建可控AI工程体系：AGENTS-Skill-驱动的实战" class="headerlink" title="从0到1构建可控AI工程体系：AGENTS + Skill 驱动的实战"></a>从0到1构建可控AI工程体系：AGENTS + Skill 驱动的实战</h1><h2 id="一、核心思路"><a href="#一、核心思路" class="headerlink" title="一、核心思路"></a>一、核心思路</h2><p>我将 AI 开发过程抽象为三层结构：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AI工程体系</span><br><span class="line">├── AGENTS.md          # 规则层（约束AI行为）</span><br><span class="line">├── .agents/skills     # 能力层（定义AI如何写代码）</span><br><span class="line">└── .codex/config.toml # 控制层（AI运行方式）</span><br></pre></td></tr></table></figure>
+
+<h3 id="架构说明"><a href="#架构说明" class="headerlink" title="架构说明"></a>架构说明</h3><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>规则层</td>
+<td>AGENTS.md</td>
+<td>定义项目规范</td>
+</tr>
+<tr>
+<td>能力层</td>
+<td>Skill</td>
+<td>定义AI如何生成代码</td>
+</tr>
+<tr>
+<td>控制层</td>
+<td>config.toml</td>
+<td>控制AI运行行为</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、项目结构"><a href="#二、项目结构" class="headerlink" title="二、项目结构"></a>二、项目结构</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">hello-code</span><br><span class="line">├── src</span><br><span class="line">├── pom.xml</span><br><span class="line">├── AGENTS.md</span><br><span class="line">├── README.md</span><br><span class="line">├── docker-compose.yml</span><br><span class="line">├── .agents</span><br><span class="line">│   └── skills</span><br><span class="line">│       └── springboot-backend-standard</span><br><span class="line">│           └── SKILL.md</span><br><span class="line">└── .codex</span><br><span class="line">    └── config.toml</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、AGENTS-md（规则层）"><a href="#三、AGENTS-md（规则层）" class="headerlink" title="三、AGENTS.md（规则层）"></a>三、AGENTS.md（规则层）</h2><p>AGENTS.md 的核心作用是：</p>
+<blockquote>
+<p>约束 AI 生成代码必须符合工程规范</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 项目定位</span></span><br><span class="line">用于面试展示的 Spring Boot 后端系统</span><br><span class="line"></span><br><span class="line"><span class="section">## 技术栈</span></span><br><span class="line"><span class="bullet">-</span> Java 17</span><br><span class="line"><span class="bullet">-</span> Spring Boot 3.3.x</span><br><span class="line"><span class="bullet">-</span> JPA + H2</span><br><span class="line"><span class="bullet">-</span> RabbitMQ</span><br><span class="line"><span class="bullet">-</span> Elasticsearch</span><br><span class="line"></span><br><span class="line"><span class="section">## 代码规范</span></span><br><span class="line"><span class="bullet">-</span> 分层结构（controller/service/repository）</span><br><span class="line"><span class="bullet">-</span> 使用统一返回 Result<span class="language-xml"><span class="tag">&lt;<span class="name">T</span>&gt;</span></span></span><br><span class="line"><span class="bullet">-</span> 必须有全局异常处理</span><br><span class="line"><span class="bullet">-</span> DTO / VO 分离</span><br><span class="line"></span><br><span class="line"><span class="section">## 输出要求</span></span><br><span class="line"><span class="bullet">-</span> 必须生成 README.md</span><br><span class="line"><span class="bullet">-</span> 必须生成 demo.http</span><br><span class="line"><span class="bullet">-</span> 必须提供演示步骤</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="四、Skill-设计（能力层）"><a href="#四、Skill-设计（能力层）" class="headerlink" title="四、Skill 设计（能力层）"></a>四、Skill 设计（能力层）</h2><p>路径：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.agents/skills/springboot-backend-standard/SKILL.md</span><br></pre></td></tr></table></figure>
+
+<h3 id="Skill-的本质"><a href="#Skill-的本质" class="headerlink" title="Skill 的本质"></a>Skill 的本质</h3><p>Skill 本质上是给 AI 定义“如何写代码的方法论”。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">name: springboot-backend-standard</span><br><span class="line"><span class="section">description: 生成适合面试展示的Spring Boot后端项目</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 技术选型</span></span><br><span class="line"><span class="bullet">-</span> Spring Boot 3.3.x</span><br><span class="line"><span class="bullet">-</span> JPA + H2</span><br><span class="line"><span class="bullet">-</span> RabbitMQ</span><br><span class="line"><span class="bullet">-</span> Elasticsearch</span><br><span class="line"></span><br><span class="line"><span class="section"># 生成规则</span></span><br><span class="line"><span class="bullet">1.</span> 必须可运行</span><br><span class="line"><span class="bullet">2.</span> 必须包含 demo.http</span><br><span class="line"><span class="bullet">3.</span> 必须包含 README.md</span><br><span class="line"><span class="bullet">4.</span> 必须说明如何演示</span><br><span class="line"><span class="bullet">5.</span> 保证依赖版本兼容</span><br><span class="line"></span><br><span class="line"><span class="section"># 输出内容</span></span><br><span class="line"><span class="bullet">-</span> Controller / Service / Repository</span><br><span class="line"><span class="bullet">-</span> 全局异常处理</span><br><span class="line"><span class="bullet">-</span> Result 统一返回</span><br><span class="line"><span class="bullet">-</span> 示例接口</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、Codex-配置（控制层）"><a href="#五、Codex-配置（控制层）" class="headerlink" title="五、Codex 配置（控制层）"></a>五、Codex 配置（控制层）</h2><p>路径：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.codex/config.toml</span><br></pre></td></tr></table></figure>
+
+<p>配置内容：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">project_root_markers</span> = [<span class="string">&quot;.git&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="section">[features]</span></span><br><span class="line"><span class="attr">auto_search</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">auto_context</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>作用：</p>
+<ul>
+<li>标记项目根目录</li>
+<li>提高 AI 上下文理解能力</li>
+<li>保证 AGENTS 与 Skill 能稳定生效</li>
+</ul>
+<hr>
+<h2 id="六、AI驱动开发流程"><a href="#六、AI驱动开发流程" class="headerlink" title="六、AI驱动开发流程"></a>六、AI驱动开发流程</h2><h3 id="1-指定规则与能力"><a href="#1-指定规则与能力" class="headerlink" title="1. 指定规则与能力"></a>1. 指定规则与能力</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">请使用 springboot-backend-standard skill，</span><br><span class="line">并遵循 AGENTS.md，</span><br><span class="line">生成检测结果管理接口</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-AI自动生成内容"><a href="#2-AI自动生成内容" class="headerlink" title="2. AI自动生成内容"></a>2. AI自动生成内容</h3><p>AI会自动生成：</p>
+<ul>
+<li>Controller</li>
+<li>Service</li>
+<li>Repository</li>
+<li>demo.http</li>
+<li>README</li>
+<li>接口示例</li>
+</ul>
+<hr>
+<h3 id="3-本地运行"><a href="#3-本地运行" class="headerlink" title="3. 本地运行"></a>3. 本地运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn spring-boot:run</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-数据库控制台访问"><a href="#4-数据库控制台访问" class="headerlink" title="4. 数据库控制台访问"></a>4. 数据库控制台访问</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8080/h2-console</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-数据验证"><a href="#5-数据验证" class="headerlink" title="5. 数据验证"></a>5. 数据验证</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> detection_result;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、项目演示效果"><a href="#七、项目演示效果" class="headerlink" title="七、项目演示效果"></a>七、项目演示效果</h2><p>项目运行效果如下：</p>
+<p><img src="/images/IDEA%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE.png" alt="IDEA运行界面"></p>
+<p>数据库查询结果如下：</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2.png" alt="H2查询结果"></p>
+<p>示例数据：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;defectType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;crack&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;defectLevel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;high&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;summary&quot;</span><span class="punctuation">:</span> <span class="string">&quot;检测到明显裂缝，长度约12cm&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、核心收获"><a href="#八、核心收获" class="headerlink" title="八、核心收获"></a>八、核心收获</h2><p>本项目的核心不在业务，而在工程方法。</p>
+<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><ul>
+<li>构建了 AGENTS 约束 AI 行为</li>
+<li>构建了 Skill 控制代码生成方式</li>
+<li>形成可复用的 AI 开发模板</li>
+<li>实现 AI 生成代码的工程化落地</li>
+</ul>
+<h3 id="避免的问题"><a href="#避免的问题" class="headerlink" title="避免的问题"></a>避免的问题</h3><ul>
+<li>AI 随意生成代码</li>
+<li>项目结构混乱</li>
+<li>依赖版本冲突</li>
+<li>项目无法运行或演示</li>
+</ul>
+<hr>
+<h2 id="九、总结"><a href="#九、总结" class="headerlink" title="九、总结"></a>九、总结</h2><p>通过 AGENTS + Skill + Codex 配置，实现了：</p>
+<blockquote>
+<p>从“使用AI写代码”到“让AI参与工程开发”的转变</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" data-id="cmnqx22yh0000b4ui2h2y31a2" data-title="vibe coding实战" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Elasticsearch-入门实战：在-Ubuntu-虚拟机中搭建-ES-并完成索引与查询" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" class="article-date">
+  <time class="dt-published" datetime="2026-03-24T16:00:00.000Z" itemprop="datePublished">2026-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/">Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="1-为什么学习-Elasticsearch"><a href="#1-为什么学习-Elasticsearch" class="headerlink" title="1. 为什么学习 Elasticsearch"></a>1. 为什么学习 Elasticsearch</h2><p>Elasticsearch（简称 ES）是一个基于 Lucene 的分布式搜索与分析引擎，常用于全文检索、日志分析、商品搜索和数据查询等场景。<br>对于初学者来说，最重要的不是先背大量概念，而是先把服务跑起来，再通过“创建索引、写入文档、执行查询”建立整体认识。</p>
+<hr>
+<h2 id="2-实验环境"><a href="#2-实验环境" class="headerlink" title="2. 实验环境"></a>2. 实验环境</h2><ul>
+<li>Ubuntu 22.04 虚拟机</li>
+<li>Elasticsearch 9.x</li>
+<li>curl 命令行工具</li>
+</ul>
+<hr>
+<h2 id="3-安装-Elasticsearch"><a href="#3-安装-Elasticsearch" class="headerlink" title="3. 安装 Elasticsearch"></a>3. 安装 Elasticsearch</h2><h3 id="3-1-导入官方-GPG-key"><a href="#3-1-导入官方-GPG-key" class="headerlink" title="3.1 导入官方 GPG key"></a>3.1 导入官方 GPG key</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | <span class="built_in">sudo</span> gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg</span><br><span class="line">````</span><br><span class="line"></span><br><span class="line"><span class="comment">### 3.2 添加仓库</span></span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/9.x/apt stable main&quot;</span> | <span class="built_in">sudo</span> <span class="built_in">tee</span> /etc/apt/sources.list.d/elastic-9.x.list</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-安装-ES"><a href="#3-3-安装-ES" class="headerlink" title="3.3 安装 ES"></a>3.3 安装 ES</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install -y apt-transport-https</span><br><span class="line"><span class="built_in">sudo</span> apt-get install -y elasticsearch</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-启动-Elasticsearch"><a href="#4-启动-Elasticsearch" class="headerlink" title="4. 启动 Elasticsearch"></a>4. 启动 Elasticsearch</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> elasticsearch</span><br><span class="line"><span class="built_in">sudo</span> systemctl start elasticsearch</span><br><span class="line"><span class="built_in">sudo</span> systemctl status elasticsearch</span><br></pre></td></tr></table></figure>
+
+<p>如果状态显示 <code>active (running)</code>，说明 ES 已成功启动。</p>
+<hr>
+<h2 id="5-设置-elastic-用户密码"><a href="#5-设置-elastic-用户密码" class="headerlink" title="5. 设置 elastic 用户密码"></a>5. 设置 elastic 用户密码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic</span><br></pre></td></tr></table></figure>
+
+<p>然后把密码保存为环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ELASTIC_PASSWORD=<span class="string">&#x27;你的密码&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-验证服务是否正常"><a href="#6-验证服务是否正常" class="headerlink" title="6. 验证服务是否正常"></a>6. 验证服务是否正常</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> https://localhost:9200</span><br></pre></td></tr></table></figure>
+
+<p>如果返回包含 <code>cluster_name</code>、<code>version</code> 等字段的 JSON，说明服务已运行成功。</p>
+<hr>
+<h2 id="7-创建索引"><a href="#7-创建索引" class="headerlink" title="7. 创建索引"></a>7. 创建索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X PUT <span class="string">&quot;https://localhost:9200/student&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;mappings&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;properties&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;name&quot;:  &#123; &quot;type&quot;: &quot;text&quot; &#125;,</span></span><br><span class="line"><span class="string">      &quot;age&quot;:   &#123; &quot;type&quot;: &quot;integer&quot; &#125;,</span></span><br><span class="line"><span class="string">      &quot;major&quot;: &#123; &quot;type&quot;: &quot;keyword&quot; &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个索引中定义了 3 个字段：</p>
+<ul>
+<li><code>name</code>：文本类型</li>
+<li><code>age</code>：整数类型</li>
+<li><code>major</code>：关键字类型</li>
+</ul>
+<hr>
+<h3 id="索引创建过程示意"><a href="#索引创建过程示意" class="headerlink" title="索引创建过程示意"></a>索引创建过程示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/curl%E5%AE%9E%E6%88%98.png" class="" title="索引创建示意图">
+
+<hr>
+<h2 id="8-插入文档"><a href="#8-插入文档" class="headerlink" title="8. 插入文档"></a>8. 插入文档</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/1&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Alice&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/2&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Bob&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 24,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;mechanical&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X POST <span class="string">&quot;https://localhost:9200/student/_doc/3&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;name&quot;: &quot;Cindy&quot;,</span></span><br><span class="line"><span class="string">  &quot;age&quot;: 22,</span></span><br><span class="line"><span class="string">  &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查询结果示意"><a href="#查询结果示意" class="headerlink" title="查询结果示意"></a>查询结果示意</h3><img src="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/%E6%9F%A5%E8%AF%A2%E6%BC%94%E7%A4%BA.png" class="" title="查询示意图">
+
+<hr>
+<h2 id="9-查询示例"><a href="#9-查询示例" class="headerlink" title="9. 查询示例"></a>9. 查询示例</h2><h3 id="9-1-查询全部数据"><a href="#9-1-查询全部数据" class="headerlink" title="9.1 查询全部数据"></a>9.1 查询全部数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;match_all&quot;: &#123;&#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-查询专业为-computer-的学生"><a href="#9-2-查询专业为-computer-的学生" class="headerlink" title="9.2 查询专业为 computer 的学生"></a>9.2 查询专业为 computer 的学生</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;term&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;major&quot;: &quot;computer&quot;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-3-查询年龄为-22-的学生"><a href="#9-3-查询年龄为-22-的学生" class="headerlink" title="9.3 查询年龄为 22 的学生"></a>9.3 查询年龄为 22 的学生</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl --cacert /etc/elasticsearch/certs/http_ca.crt -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">-X GET <span class="string">&quot;https://localhost:9200/student/_search&quot;</span> \</span><br><span class="line">-H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">-d <span class="string">&#x27;</span></span><br><span class="line"><span class="string">&#123;</span></span><br><span class="line"><span class="string">  &quot;query&quot;: &#123;</span></span><br><span class="line"><span class="string">    &quot;term&quot;: &#123;</span></span><br><span class="line"><span class="string">      &quot;age&quot;: 22</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h2><p>通过这次实验，我完成了 Elasticsearch 单机环境的搭建，并实践了以下核心操作：</p>
+<ol>
+<li>安装并启动 ES 服务</li>
+<li>使用 HTTPS 和账号密码访问 ES</li>
+<li>创建索引和字段映射</li>
+<li>插入文档数据</li>
+<li>进行基础查询</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/" data-id="cmn5fki7700006oui338b2ova" data-title="Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-RabbitMQ笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-17T16:00:00.000Z" itemprop="datePublished">2026-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/">RabbitMQ入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="RabbitMQ入门"><a href="#RabbitMQ入门" class="headerlink" title="RabbitMQ入门"></a>RabbitMQ入门</h1><blockquote>
+<p>💡 本文基于实际学习，适合快速掌握RabbitMQ核心原理</p>
+</blockquote>
+<hr>
+<h2 id="🧠-一、什么是RabbitMQ"><a href="#🧠-一、什么是RabbitMQ" class="headerlink" title="🧠 一、什么是RabbitMQ"></a>🧠 一、什么是RabbitMQ</h2><p>RabbitMQ 是一个基于 <strong>AMQP协议</strong> 的消息中间件，用于实现系统之间的通信。</p>
+<p>✨ 本质作用：</p>
+<ul>
+<li>解耦系统</li>
+<li>异步处理</li>
+<li>流量削峰</li>
+</ul>
+<hr>
+<h2 id="🎯-二、为什么要使用RabbitMQ？"><a href="#🎯-二、为什么要使用RabbitMQ？" class="headerlink" title="🎯 二、为什么要使用RabbitMQ？"></a>🎯 二、为什么要使用RabbitMQ？</h2><h3 id="🚀-1-解耦"><a href="#🚀-1-解耦" class="headerlink" title="🚀 1. 解耦"></a>🚀 1. 解耦</h3><p>系统之间不直接调用，提高扩展性  </p>
+<h3 id="⚡-2-异步"><a href="#⚡-2-异步" class="headerlink" title="⚡ 2. 异步"></a>⚡ 2. 异步</h3><p>提高接口响应速度  </p>
+<h3 id="📈-3-削峰"><a href="#📈-3-削峰" class="headerlink" title="📈 3. 削峰"></a>📈 3. 削峰</h3><p>应对高并发流量  </p>
+<hr>
+<h2 id="🏗-三、核心架构"><a href="#🏗-三、核心架构" class="headerlink" title="🏗 三、核心架构"></a>🏗 三、核心架构</h2><blockquote>
+<p>💡 RabbitMQ最核心的一张图</p>
+</blockquote>
+<hr>
+<h2 id="🖼️-架构图解析"><a href="#🖼️-架构图解析" class="headerlink" title="🖼️ 架构图解析"></a>🖼️ 架构图解析</h2><img src="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/hello-world-example-routing.webp" class="" title="RabbitMQ示意图">
+
+<hr>
+<h2 id="🔑-四、核心组件"><a href="#🔑-四、核心组件" class="headerlink" title="🔑 四、核心组件"></a>🔑 四、核心组件</h2><h3 id="🔹-Producer（生产者）"><a href="#🔹-Producer（生产者）" class="headerlink" title="🔹 Producer（生产者）"></a>🔹 Producer（生产者）</h3><p>发送消息的一方  </p>
+<h3 id="🔹-Exchange（交换机）🔥"><a href="#🔹-Exchange（交换机）🔥" class="headerlink" title="🔹 Exchange（交换机）🔥"></a>🔹 Exchange（交换机）🔥</h3><p>负责路由消息（核心）</p>
+<h3 id="🔹-Queue（队列）"><a href="#🔹-Queue（队列）" class="headerlink" title="🔹 Queue（队列）"></a>🔹 Queue（队列）</h3><p>存储消息  </p>
+<h3 id="🔹-Consumer（消费者）"><a href="#🔹-Consumer（消费者）" class="headerlink" title="🔹 Consumer（消费者）"></a>🔹 Consumer（消费者）</h3><p>处理消息  </p>
+<hr>
+<h2 id="🔥-五、四种Exchange（重点）"><a href="#🔥-五、四种Exchange（重点）" class="headerlink" title="🔥 五、四种Exchange（重点）"></a>🔥 五、四种Exchange（重点）</h2><hr>
+<h3 id="1️⃣-Direct（直连模式）"><a href="#1️⃣-Direct（直连模式）" class="headerlink" title="1️⃣ Direct（直连模式）"></a>1️⃣ Direct（直连模式）</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">routingKey = error</span><br></pre></td></tr></table></figure>
+
+<p>👉 精确匹配</p>
+<hr>
+<h3 id="2️⃣-Fanout（广播模式）"><a href="#2️⃣-Fanout（广播模式）" class="headerlink" title="2️⃣ Fanout（广播模式）"></a>2️⃣ Fanout（广播模式）</h3><p>👉 无视routingKey</p>
+<p>✔️ 发送给所有队列</p>
+<p>👉 适用于：</p>
+<ul>
+<li>日志广播</li>
+<li>系统通知</li>
+</ul>
+<hr>
+<h3 id="3️⃣-Topic（通配符模式🔥）"><a href="#3️⃣-Topic（通配符模式🔥）" class="headerlink" title="3️⃣ Topic（通配符模式🔥）"></a>3️⃣ Topic（通配符模式🔥）</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*  匹配一个单词</span><br><span class="line">#  匹配多个单词</span><br></pre></td></tr></table></figure>
+
+<p>例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">order.*</span><br><span class="line">order.#</span><br></pre></td></tr></table></figure>
+
+<p>👉 最常用交换机类型</p>
+<hr>
+<h3 id="4️⃣-Headers（了解即可）"><a href="#4️⃣-Headers（了解即可）" class="headerlink" title="4️⃣ Headers（了解即可）"></a>4️⃣ Headers（了解即可）</h3><p>👉 根据header匹配</p>
+<hr>
+<h2 id="🔄-六、RabbitMQ工作模式"><a href="#🔄-六、RabbitMQ工作模式" class="headerlink" title="🔄 六、RabbitMQ工作模式"></a>🔄 六、RabbitMQ工作模式</h2><hr>
+<h3 id="🟢-简单模式"><a href="#🟢-简单模式" class="headerlink" title="🟢 简单模式"></a>🟢 简单模式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Producer → Queue → Consumer</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="🟡-工作队列模式"><a href="#🟡-工作队列模式" class="headerlink" title="🟡 工作队列模式"></a>🟡 工作队列模式</h3><p>👉 多消费者分摊任务</p>
+<p>👉 特点：</p>
+<ul>
+<li>一条消息只会被一个消费者处理</li>
+</ul>
+<hr>
+<h3 id="🔵-发布订阅模式"><a href="#🔵-发布订阅模式" class="headerlink" title="🔵 发布订阅模式"></a>🔵 发布订阅模式</h3><p>👉 使用 Fanout</p>
+<p>👉 特点：</p>
+<ul>
+<li>广播消息</li>
+</ul>
+<hr>
+<h3 id="🔴-路由模式"><a href="#🔴-路由模式" class="headerlink" title="🔴 路由模式"></a>🔴 路由模式</h3><p>👉 使用 Direct</p>
+<p>👉 特点：</p>
+<ul>
+<li>精准分发</li>
+</ul>
+<hr>
+<h2 id="⚙️-七、安装RabbitMQ（Docker）"><a href="#⚙️-七、安装RabbitMQ（Docker）" class="headerlink" title="⚙️ 七、安装RabbitMQ（Docker）"></a>⚙️ 七、安装RabbitMQ（Docker）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">--name rabbitmq \</span><br><span class="line">-p 5672:5672 \</span><br><span class="line">-p 15672:15672 \</span><br><span class="line">rabbitmq:3-management</span><br></pre></td></tr></table></figure>
+
+<p>访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:15672</span><br></pre></td></tr></table></figure>
+
+<p>账号密码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">guest / guest</span><br><span class="line">admin / 123456</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="💻-八、Java示例（生产者）"><a href="#💻-八、Java示例（生产者）" class="headerlink" title="💻 八、Java示例（生产者）"></a>💻 八、Java示例（生产者）</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ConnectionFactory</span> <span class="variable">factory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConnectionFactory</span>();</span><br><span class="line">factory.setHost(<span class="string">&quot;localhost&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">Connection</span> <span class="variable">connection</span> <span class="operator">=</span> factory.newConnection();</span><br><span class="line"><span class="type">Channel</span> <span class="variable">channel</span> <span class="operator">=</span> connection.createChannel();</span><br><span class="line"></span><br><span class="line">channel.queueDeclare(<span class="string">&quot;hello&quot;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="string">&quot;Hello RabbitMQ!&quot;</span>;</span><br><span class="line">channel.basicPublish(<span class="string">&quot;&quot;</span>, <span class="string">&quot;hello&quot;</span>, <span class="literal">null</span>, message.getBytes());</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">&quot;发送成功&quot;</span>);</span><br><span class="line"></span><br><span class="line">channel.close();</span><br><span class="line">connection.close();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="💻-九、消费者代码"><a href="#💻-九、消费者代码" class="headerlink" title="💻 九、消费者代码"></a>💻 九、消费者代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">channel.basicConsume(<span class="string">&quot;hello&quot;</span>, <span class="literal">true</span>, (consumerTag, message) -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;收到消息：&quot;</span> + <span class="keyword">new</span> <span class="title class_">String</span>(message.getBody()));</span><br><span class="line">&#125;, consumerTag -&gt; &#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🚀-十、高级特性（面试重点🔥）"><a href="#🚀-十、高级特性（面试重点🔥）" class="headerlink" title="🚀 十、高级特性（面试重点🔥）"></a>🚀 十、高级特性（面试重点🔥）</h2><h3 id="✅-消息确认机制（ACK）"><a href="#✅-消息确认机制（ACK）" class="headerlink" title="✅ 消息确认机制（ACK）"></a>✅ 消息确认机制（ACK）</h3><p>防止消息丢失</p>
+<hr>
+<h3 id="✅-死信队列（DLQ）"><a href="#✅-死信队列（DLQ）" class="headerlink" title="✅ 死信队列（DLQ）"></a>✅ 死信队列（DLQ）</h3><p>处理异常消息</p>
+<hr>
+<h3 id="✅-延迟队列"><a href="#✅-延迟队列" class="headerlink" title="✅ 延迟队列"></a>✅ 延迟队列</h3><p>用于：</p>
+<ul>
+<li>订单超时</li>
+<li>定时任务</li>
+</ul>
+<hr>
+<h3 id="✅-持久化"><a href="#✅-持久化" class="headerlink" title="✅ 持久化"></a>✅ 持久化</h3><p>保证消息不丢</p>
+<hr>
+<h2 id="🖼️-RabbitMQ管理界面"><a href="#🖼️-RabbitMQ管理界面" class="headerlink" title="🖼️ RabbitMQ管理界面"></a>🖼️ RabbitMQ管理界面</h2><img src="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/%E5%AE%89%E8%A3%85rabbitMQ%E6%9C%8D%E5%8A%A1%E5%99%A8.png" class="" title="RabbitMQ示意图">
+<img src="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/rabbitMQ-UI.png" class="" title="RabbitMQ示意图">
+
+<p>接收信息示例：</p>
+<img src="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/%E6%8E%A5%E5%8F%97%E4%BF%A1%E6%81%AF%E7%A4%BA%E4%BE%8B.png" class="" title="RabbitMQ示意图">
+
+<hr>
+<h2 id="🎯-十一、总结"><a href="#🎯-十一、总结" class="headerlink" title="🎯 十一、总结"></a>🎯 十一、总结</h2><blockquote>
+<p>💡 RabbitMQ核心 &#x3D; Exchange路由机制</p>
+</blockquote>
+<p>✔️ 掌握这三点即可理解80%：</p>
+<ul>
+<li>Exchange</li>
+<li>RoutingKey</li>
+<li>Queue</li>
+</ul>
+<hr>
+<h1 id="🚀-END"><a href="#🚀-END" class="headerlink" title="🚀 END"></a>🚀 END</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/" data-id="cmn5fki7b00016ouic0jb4e59" data-title="RabbitMQ入门" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Redis-学习" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time class="dt-published" datetime="2026-03-16T09:12:49.000Z" itemprop="datePublished">2026-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/">Redis 学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis-学习笔记"><a href="#Redis-学习笔记" class="headerlink" title="Redis 学习笔记"></a>Redis 学习笔记</h1><h2 id="一、Redis简介"><a href="#一、Redis简介" class="headerlink" title="一、Redis简介"></a>一、Redis简介</h2><p>Redis（Remote Dictionary Server）是一个高性能的键值型数据库。</p>
+<h2 id="二、Redis架构示意图"><a href="#二、Redis架构示意图" class="headerlink" title="二、Redis架构示意图"></a>二、Redis架构示意图</h2><p><img src="/images/redis-architecture.jpg" alt="Redis架构图"></p>
+<h2 id="图：Redis整体架构"><a href="#图：Redis整体架构" class="headerlink" title="图：Redis整体架构"></a>图：Redis整体架构</h2><h2 id="三、Redis核心数据结构"><a href="#三、Redis核心数据结构" class="headerlink" title="三、Redis核心数据结构"></a>三、Redis核心数据结构</h2><p>Redis支持以下几种主要数据结构：</p>
+<table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>List</td>
+<td>列表</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>集合</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>哈希</td>
+</tr>
+<tr>
+<td>Zset</td>
+<td>有序集合</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<pre><code class="bash">set name lyc
+get name
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/" data-id="cmn5fki7e00046ouih9l11g4s" data-title="Redis 学习笔记" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-我的第一篇HEXO博客" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/" class="article-date">
@@ -105,7 +599,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/" data-id="cmmshxl8k00012wui04486jnb" data-title="我的第一篇HEXO博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/" data-id="cmn5fki7f00056oui5sef48es" data-title="我的第一篇HEXO博客" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -158,7 +652,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://lc-crypto-max.github.io/2026/03/16/hello-world/" data-id="cmmshxl8b00002wuicjox8jow" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      <a data-url="http://lc-crypto-max.github.io/2026/03/16/hello-world/" data-id="cmn5fki7q000w6ouidsa21zbr" data-title="Hello World" class="article-share-link"><span class="fa fa-share">分享</span></a>
       
       
       
@@ -177,13 +671,20 @@
           <aside id="sidebar">
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li></ul>
+    </div>
+  </div>
+
 
   
     
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
     </div>
   </div>
 
@@ -193,7 +694,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a>
+      <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">AI工程</a> <a href="/tags/Codex/" style="font-size: 10px;">Codex</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 10px;">后端开发</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
     </div>
   </div>
 
@@ -202,7 +703,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -215,11 +716,23 @@
       <ul>
         
           <li>
-            <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/">我的第一篇HEXO博客</a>
+            <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
           </li>
         
           <li>
-            <a href="/2026/03/16/hello-world/">Hello World</a>
+            <a href="/2026/03/25/Elasticsearch-%E5%85%A5%E9%97%A8%E5%AE%9E%E6%88%98%EF%BC%9A%E5%9C%A8-Ubuntu-%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%90%AD%E5%BB%BA-ES-%E5%B9%B6%E5%AE%8C%E6%88%90%E7%B4%A2%E5%BC%95%E4%B8%8E%E6%9F%A5%E8%AF%A2/">Elasticsearch 入门实战：在 Ubuntu 虚拟机中搭建 ES 并完成索引与查询</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/18/RabbitMQ%E7%AC%94%E8%AE%B0/">RabbitMQ入门</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/">Redis 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/">我的第一篇HEXO博客</a>
           </li>
         
       </ul>

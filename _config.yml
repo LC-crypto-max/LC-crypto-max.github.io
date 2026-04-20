@@ -108,3 +108,13 @@ deploy:
   branch: gh-Pages
   
   message: "Site updated:{{now('YYYY-MM-DD HH:mm:ss')}}"
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
