@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, LC-crypto-max</rights>
   <subtitle>记录技术成长</subtitle>
   <title>Engineering Notes</title>
-  <updated>2026-05-06T02:49:40.294Z</updated>
+  <updated>2026-05-06T02:51:27.846Z</updated>
   <entry>
     <author>
       <name>LC-crypto-max</name>
@@ -30,7 +30,7 @@
     <published>2026-05-03T12:00:00.000Z</published>
     <summary>记录一次从零开始使用 Code X / Codex 在命令行中构建 Spring Boot 订单系统的过程，重点介绍 spring-boot-testing Skill 和 code-reviewer Skill 在测试补充与代码审查中的作用。</summary>
     <title>从零使用 Code X + Skill 构建 Spring Boot 订单系统：一次 AI 编程实践记录</title>
-    <updated>2026-05-06T02:49:40.294Z</updated>
+    <updated>2026-05-06T02:51:27.846Z</updated>
   </entry>
   <entry>
     <author>
