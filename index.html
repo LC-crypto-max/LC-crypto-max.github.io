@@ -77,6 +77,299 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-从零使用-Code-X-Skill-构建-Spring-Boot-订单系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/05/03/%E4%BB%8E%E9%9B%B6%E4%BD%BF%E7%94%A8-Code-X-Skill-%E6%9E%84%E5%BB%BA-Spring-Boot-%E8%AE%A2%E5%8D%95%E7%B3%BB%E7%BB%9F/" class="article-date">
+  <time class="dt-published" datetime="2026-05-03T12:00:00.000Z" itemprop="datePublished">2026-05-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/AI-%E5%B7%A5%E5%85%B7%E5%AE%9E%E8%B7%B5/">AI 工具实践</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/05/03/%E4%BB%8E%E9%9B%B6%E4%BD%BF%E7%94%A8-Code-X-Skill-%E6%9E%84%E5%BB%BA-Spring-Boot-%E8%AE%A2%E5%8D%95%E7%B3%BB%E7%BB%9F/">从零使用 Code X + Skill 构建 Spring Boot 订单系统：一次 AI 编程实践记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="一、写在前面"><a href="#一、写在前面" class="headerlink" title="一、写在前面"></a>一、写在前面</h2><p>最近我尝试用 <strong>Code X &#x2F; Codex</strong> 在命令行中从零构建一个 Spring Boot 后端项目。这个项目并不是为了单纯展示“AI 帮我写了多少代码”，而是想验证一个更实际的问题：</p>
+<blockquote>
+<p>AI 编程工具能不能参与一个后端项目从需求拆解、代码生成、测试补充到代码审查的完整流程？</p>
+</blockquote>
+<p>这次实践中，我选择构建一个简易订单系统，业务包括商品查询、用户下单、库存扣减、订单详情查询和订单搜索。技术上涉及 Spring Boot、MySQL、Redis、RabbitMQ、Elasticsearch 等常见后端组件。</p>
+<p>整个过程中，我重点使用了两个 Skill：</p>
+<ol>
+<li><code>spring-boot-testing</code>：用于补充 Spring Boot 测试；</li>
+<li><code>code-reviewer</code>：用于对生成代码进行安全性、性能、结构和工程质量审查。</li>
+</ol>
+<hr>
+<h2 id="二、为什么要用-Code-X-Codex？"><a href="#二、为什么要用-Code-X-Codex？" class="headerlink" title="二、为什么要用 Code X &#x2F; Codex？"></a>二、为什么要用 Code X &#x2F; Codex？</h2><p>传统使用 AI 的方式，更多是“在网页里问问题，然后复制代码到本地”。这种方式虽然方便，但上下文割裂比较明显。</p>
+<p>而 Code X &#x2F; Codex 更像一个本地开发 Agent，它可以在当前项目目录中：</p>
+<ul>
+<li>读取已有代码；</li>
+<li>创建新文件；</li>
+<li>修改代码；</li>
+<li>生成测试；</li>
+<li>更新 README；</li>
+<li>根据项目上下文持续迭代；</li>
+<li>结合 Skill 执行专项任务。</li>
+</ul>
+<p>也就是说，它不是单纯回答问题，而是能直接参与项目构建。</p>
+<p>我的理解是：</p>
+<blockquote>
+<p>ChatGPT 更像一个问答助手，而 Codex &#x2F; Code X 更像一个能在本地项目中工作的 AI 编程 Agent。</p>
+</blockquote>
+<hr>
+<h2 id="三、Skill-是什么？"><a href="#三、Skill-是什么？" class="headerlink" title="三、Skill 是什么？"></a>三、Skill 是什么？</h2><p>普通 Prompt 是一次性的指令，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请帮我生成一个 Spring Boot 项目。</span><br></pre></td></tr></table></figure>
+
+<p>而 Skill 更像一份可复用的专项工作流，里面包含某一类任务的规则、经验和执行标准。</p>
+<p>比如：</p>
+<ul>
+<li><code>spring-boot-testing</code> 会告诉 AI：Spring Boot 项目应该如何选择测试方式；</li>
+<li><code>code-reviewer</code> 会告诉 AI：代码审查时应该关注安全、性能、异常处理、可维护性等问题。</li>
+</ul>
+<p>所以 Skill 的价值在于：</p>
+<blockquote>
+<p>让 AI 不只是“泛泛地写代码”，而是按照某个领域的最佳实践执行任务。</p>
+</blockquote>
+<hr>
+<h2 id="四、项目目标：构建一个简易订单系统"><a href="#四、项目目标：构建一个简易订单系统" class="headerlink" title="四、项目目标：构建一个简易订单系统"></a>四、项目目标：构建一个简易订单系统</h2><p>这次项目的目标是构建一个简易电商订单系统，主要包含以下功能：</p>
+<ul>
+<li>商品初始化；</li>
+<li>商品列表查询；</li>
+<li>用户下单；</li>
+<li>库存扣减；</li>
+<li>订单详情查询；</li>
+<li>Redis 订单缓存；</li>
+<li>RabbitMQ 订单创建事件；</li>
+<li>Elasticsearch 订单搜索；</li>
+<li>测试补充；</li>
+<li>代码审查。</li>
+</ul>
+<p>整体技术栈如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Java 17</span><br><span class="line">Spring Boot 3</span><br><span class="line">MyBatis Plus</span><br><span class="line">MySQL</span><br><span class="line">Redis</span><br><span class="line">RabbitMQ</span><br><span class="line">Elasticsearch</span><br><span class="line">Maven</span><br><span class="line">JUnit / Mockito / MockMvc</span><br><span class="line">Code X / Codex</span><br><span class="line">spring-boot-testing Skill</span><br><span class="line">code-reviewer Skill</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="五、系统整体设计思路"><a href="#五、系统整体设计思路" class="headerlink" title="五、系统整体设计思路"></a>五、系统整体设计思路</h2><p>订单系统的核心链路可以概括为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">用户下单</span><br><span class="line">  ↓</span><br><span class="line">校验商品和库存</span><br><span class="line">  ↓</span><br><span class="line">扣减库存</span><br><span class="line">  ↓</span><br><span class="line">创建订单和订单明细</span><br><span class="line">  ↓</span><br><span class="line">MySQL 保存主数据</span><br><span class="line">  ↓</span><br><span class="line">Redis 缓存订单详情</span><br><span class="line">  ↓</span><br><span class="line">RabbitMQ 发送订单创建事件</span><br><span class="line">  ↓</span><br><span class="line">消费者异步同步 Elasticsearch</span><br><span class="line">  ↓</span><br><span class="line">用户通过订单号或搜索条件查询订单</span><br></pre></td></tr></table></figure>
+
+<p>这里我给各个组件做了比较明确的职责划分：</p>
+<ul>
+<li><strong>MySQL</strong>：订单主数据源，负责事务一致性；</li>
+<li><strong>Redis</strong>：缓存订单详情，降低数据库查询压力；</li>
+<li><strong>RabbitMQ</strong>：订单创建后的异步事件处理；</li>
+<li><strong>Elasticsearch</strong>：订单搜索索引，不参与主交易链路。</li>
+</ul>
+<hr>
+<h2 id="六、Code-X-的使用流程"><a href="#六、Code-X-的使用流程" class="headerlink" title="六、Code X 的使用流程"></a>六、Code X 的使用流程</h2><p>这次我没有让 Code X 一次性生成完整系统，而是采用了分阶段推进的方式。</p>
+<h3 id="阶段一：生成基础下单流程"><a href="#阶段一：生成基础下单流程" class="headerlink" title="阶段一：生成基础下单流程"></a>阶段一：生成基础下单流程</h3><p>第一阶段，我让 Code X 先生成最基础的 Spring Boot 项目，包括：</p>
+<ul>
+<li><code>pom.xml</code></li>
+<li><code>application.yml</code></li>
+<li>Controller</li>
+<li>Service</li>
+<li>Mapper</li>
+<li>Entity</li>
+<li>DTO</li>
+<li>VO</li>
+<li>统一响应对象</li>
+<li>全局异常处理</li>
+<li>SQL 初始化脚本</li>
+<li>README 文档</li>
+</ul>
+<p>这一阶段重点保证：</p>
+<ul>
+<li>项目结构清晰；</li>
+<li>基础接口能跑通；</li>
+<li>下单逻辑有事务；</li>
+<li>库存不足时能够抛出业务异常。</li>
+</ul>
+<h3 id="阶段二：接入-Redis、RabbitMQ、Elasticsearch"><a href="#阶段二：接入-Redis、RabbitMQ、Elasticsearch" class="headerlink" title="阶段二：接入 Redis、RabbitMQ、Elasticsearch"></a>阶段二：接入 Redis、RabbitMQ、Elasticsearch</h3><p>基础流程跑通后，再让 Code X 逐步接入中间件：</p>
+<ul>
+<li>Redis 用于缓存订单详情；</li>
+<li>RabbitMQ 用于发送订单创建事件；</li>
+<li>Elasticsearch 用于订单搜索；</li>
+<li>Docker Compose 用于本地启动依赖服务。</li>
+</ul>
+<h3 id="阶段三：使用-spring-boot-testing-Skill-补测试"><a href="#阶段三：使用-spring-boot-testing-Skill-补测试" class="headerlink" title="阶段三：使用 spring-boot-testing Skill 补测试"></a>阶段三：使用 spring-boot-testing Skill 补测试</h3><p>项目生成后，我使用 <code>spring-boot-testing</code> Skill 来补充测试。</p>
+<p>这个 Skill 的核心价值是帮助选择合适的测试方式：</p>
+<ul>
+<li>Controller 层使用 MockMvc；</li>
+<li>Service 层使用 JUnit + Mockito；</li>
+<li>复杂集成场景可以使用 SpringBootTest；</li>
+<li>测试顺序按照“主流程、边界场景、异常场景”组织。</li>
+</ul>
+<h3 id="阶段四：使用-code-reviewer-Skill-做代码审查"><a href="#阶段四：使用-code-reviewer-Skill-做代码审查" class="headerlink" title="阶段四：使用 code-reviewer Skill 做代码审查"></a>阶段四：使用 code-reviewer Skill 做代码审查</h3><p>测试补充后，我继续使用 <code>code-reviewer</code> Skill 对项目进行审查。</p>
+<p>重点审查内容包括：</p>
+<ul>
+<li>下单事务是否正确；</li>
+<li>库存扣减是否存在超卖风险；</li>
+<li>MQ 消息是否可能提前发送；</li>
+<li>消费者是否具备幂等处理；</li>
+<li>Redis 缓存 key 是否合理；</li>
+<li>ES 同步失败是否影响主流程；</li>
+<li>Controller 是否写了过多业务逻辑；</li>
+<li>README 是否完整；</li>
+<li>是否存在不必要提交的构建产物。</li>
+</ul>
+<hr>
+<h2 id="七、两个-Skill-分别起到了什么作用？"><a href="#七、两个-Skill-分别起到了什么作用？" class="headerlink" title="七、两个 Skill 分别起到了什么作用？"></a>七、两个 Skill 分别起到了什么作用？</h2><h3 id="1-spring-boot-testing-Skill：测试专家"><a href="#1-spring-boot-testing-Skill：测试专家" class="headerlink" title="1. spring-boot-testing Skill：测试专家"></a>1. spring-boot-testing Skill：测试专家</h3><p><code>spring-boot-testing</code> 的作用是指导 Codex 生成更合理的 Spring Boot 测试。</p>
+<p>它不是简单地让 AI “随便写几个测试”，而是会按照 Spring Boot 测试分层来选择方案。</p>
+<p>比如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">测试 Controller 接口 → 使用 MockMvc</span><br><span class="line">测试 Service 业务逻辑 → 使用 JUnit + Mockito</span><br><span class="line">测试完整应用上下文 → 使用 SpringBootTest</span><br></pre></td></tr></table></figure>
+
+<p>它对我的帮助主要有三个：</p>
+<p>第一，补充了测试思路。下单接口不仅要测成功，还要测库存不足、商品不存在、参数异常等场景。</p>
+<p>第二，让测试代码更符合 Spring Boot 习惯。Controller 测试不一定要启动完整应用，而是可以使用更轻量的 Web 层测试。</p>
+<p>第三，提高项目可信度。如果只是 AI 生成业务代码，可信度并不高；但如果同时补充测试，就更容易验证代码行为。</p>
+<h3 id="2-code-reviewer-Skill：代码审查专家"><a href="#2-code-reviewer-Skill：代码审查专家" class="headerlink" title="2. code-reviewer Skill：代码审查专家"></a>2. code-reviewer Skill：代码审查专家</h3><p><code>code-reviewer</code> 的作用是从工程质量角度审查 AI 生成代码。</p>
+<p>它重点关注：</p>
+<ul>
+<li>安全性；</li>
+<li>性能；</li>
+<li>可维护性；</li>
+<li>异常处理；</li>
+<li>测试覆盖；</li>
+<li>代码结构；</li>
+<li>潜在 bug；</li>
+<li>配置问题。</li>
+</ul>
+<p>在订单系统里，我重点让它检查：</p>
+<ul>
+<li>库存扣减是否会超卖；</li>
+<li>MQ 消息是否在事务提交后发送；</li>
+<li>Redis 缓存是否有一致性风险；</li>
+<li>ES 同步失败是否影响主流程；</li>
+<li>消费者是否具备幂等处理；</li>
+<li>是否存在硬编码配置；</li>
+<li>是否有不应该提交的文件。</li>
+</ul>
+<p>这个 Skill 的价值在于，它可以把 AI 生成代码中的潜在问题暴露出来，让我再进行人工判断和优化。</p>
+<hr>
+<h2 id="八、AI-生成代码中暴露出的问题"><a href="#八、AI-生成代码中暴露出的问题" class="headerlink" title="八、AI 生成代码中暴露出的问题"></a>八、AI 生成代码中暴露出的问题</h2><p>这次实践也暴露出一些 AI 生成项目中常见的问题。</p>
+<h3 id="1-项目文件需要人工清理"><a href="#1-项目文件需要人工清理" class="headerlink" title="1. 项目文件需要人工清理"></a>1. 项目文件需要人工清理</h3><p>AI 工具生成项目后，可能会把一些不应该提交的文件也放进项目，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">target/</span><br><span class="line">.mvn/repository/</span><br><span class="line">IDE 配置文件</span><br><span class="line">日志文件</span><br><span class="line">临时文件</span><br></pre></td></tr></table></figure>
+
+<p>这类文件应该通过 <code>.gitignore</code> 排除。</p>
+<h3 id="2-中间件开关设计可能不彻底"><a href="#2-中间件开关设计可能不彻底" class="headerlink" title="2. 中间件开关设计可能不彻底"></a>2. 中间件开关设计可能不彻底</h3><p>项目中虽然可能配置了：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">redis-enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">rabbitmq-enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">elasticsearch-enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>但如果没有使用 <code>@ConditionalOnProperty</code> 控制 Bean 的创建，那么外部中间件没启动时，应用仍可能启动失败。</p>
+<h3 id="3-MQ-失败补偿需要继续完善"><a href="#3-MQ-失败补偿需要继续完善" class="headerlink" title="3. MQ 失败补偿需要继续完善"></a>3. MQ 失败补偿需要继续完善</h3><p>如果消费者同步 ES 失败，只是打印日志，那么消息可能已经被确认，后续不会自动重试。</p>
+<p>生产环境中更合理的方案是：</p>
+<ul>
+<li>消费失败重试；</li>
+<li>死信队列；</li>
+<li>失败任务表；</li>
+<li>定时补偿；</li>
+<li>ES 索引重建。</li>
+</ul>
+<h3 id="4-订单号生成还比较基础"><a href="#4-订单号生成还比较基础" class="headerlink" title="4. 订单号生成还比较基础"></a>4. 订单号生成还比较基础</h3><p>Demo 项目可能使用时间戳加随机数生成订单号。</p>
+<p>真实分布式环境中，更推荐：</p>
+<ul>
+<li>雪花算法；</li>
+<li>数据库号段模式；</li>
+<li>Redis 自增序列；</li>
+<li>日期前缀 + 分布式 ID。</li>
+</ul>
+<h3 id="5-高并发下单还需要更多治理"><a href="#5-高并发下单还需要更多治理" class="headerlink" title="5. 高并发下单还需要更多治理"></a>5. 高并发下单还需要更多治理</h3><p>基础项目中可以用数据库条件扣减库存来避免简单超卖：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> product</span><br><span class="line"><span class="keyword">SET</span> stock <span class="operator">=</span> stock <span class="operator">-</span> #&#123;quantity&#125;</span><br><span class="line"><span class="keyword">WHERE</span> id <span class="operator">=</span> #&#123;productId&#125;</span><br><span class="line">  <span class="keyword">AND</span> stock <span class="operator">&gt;=</span> #&#123;quantity&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但如果是高并发秒杀场景，还需要继续考虑：</p>
+<ul>
+<li>Redis 预扣库存；</li>
+<li>Lua 原子扣减；</li>
+<li>MQ 异步落库；</li>
+<li>库存冻结与释放；</li>
+<li>订单超时取消；</li>
+<li>接口幂等 Token。</li>
+</ul>
+<hr>
+<h2 id="九、面试中如何介绍这个项目？"><a href="#九、面试中如何介绍这个项目？" class="headerlink" title="九、面试中如何介绍这个项目？"></a>九、面试中如何介绍这个项目？</h2><p>面试时，我不会把这个项目包装成一个完全生产级订单系统，而会把它介绍成：</p>
+<blockquote>
+<p>一个使用 AI Agent 辅助构建的后端系统原型，用于验证 AI 在项目生成、测试补充、代码审查和工程化优化中的实际价值。</p>
+</blockquote>
+<p>可以这样回答：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这个项目是我用 Code X / Codex 结合 Skill 工作流构建的一个 Spring Boot 订单系统原型。业务上实现了商品查询、用户下单、库存扣减、订单详情查询和订单搜索。技术上使用 Spring Boot、MyBatis Plus、MySQL、Redis、RabbitMQ 和 Elasticsearch。</span><br><span class="line"></span><br><span class="line">我的设计思路是：MySQL 作为订单主数据源，保证事务一致性；Redis 用于订单详情缓存；RabbitMQ 用于订单创建后的异步事件；Elasticsearch 用于订单搜索，并且只作为查询索引，不参与主交易链路。</span><br><span class="line"></span><br><span class="line">我使用 AI 的方式不是让它一次性生成完就结束，而是分阶段推进。先让 Codex 生成基础业务代码，再使用 spring-boot-testing Skill 补充测试，最后使用 code-reviewer Skill 审查事务、并发、缓存一致性、MQ 幂等和 ES 最终一致性问题。</span><br><span class="line"></span><br><span class="line">所以这个项目重点体现的是我如何用 AI 提升开发效率，同时又通过测试、审查和人工判断控制代码风险。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="十、我对-AI-编程工具的理解"><a href="#十、我对-AI-编程工具的理解" class="headerlink" title="十、我对 AI 编程工具的理解"></a>十、我对 AI 编程工具的理解</h2><p>这次实践之后，我对 AI 编程工具的理解可以总结成一句话：</p>
+<blockquote>
+<p>AI 负责提高生成效率，我负责定义边界、验证正确性和控制风险。</p>
+</blockquote>
+<p>AI 很适合做这些事情：</p>
+<ul>
+<li>生成项目骨架；</li>
+<li>生成 Controller &#x2F; Service &#x2F; DTO；</li>
+<li>生成 README；</li>
+<li>生成测试模板；</li>
+<li>整理接口文档；</li>
+<li>做初步代码审查；</li>
+<li>给出优化建议。</li>
+</ul>
+<p>但 AI 不应该完全替代开发者做这些判断：</p>
+<ul>
+<li>系统边界；</li>
+<li>事务一致性；</li>
+<li>并发安全；</li>
+<li>消息可靠性；</li>
+<li>缓存一致性；</li>
+<li>数据最终一致性；</li>
+<li>生产风险控制。</li>
+</ul>
+<hr>
+<h2 id="十一、后续优化方向"><a href="#十一、后续优化方向" class="headerlink" title="十一、后续优化方向"></a>十一、后续优化方向</h2><p>这个项目后续还可以继续完善：</p>
+<ol>
+<li>增加 <code>.gitignore</code>，排除构建产物和本地依赖缓存；</li>
+<li>Redis、RabbitMQ、ES 组件改成 <code>@ConditionalOnProperty</code> 条件装配；</li>
+<li>RabbitMQ 增加重试队列和死信队列；</li>
+<li>ES 同步失败增加补偿任务；</li>
+<li>订单号生成改为雪花算法；</li>
+<li>下单接口增加 requestId 或 token 幂等；</li>
+<li>增加订单超时取消和库存释放；</li>
+<li>搜索接口增加分页、排序和时间范围过滤；</li>
+<li>README 增加架构图和面试讲解版本；</li>
+<li>补充更多集成测试和异常测试。</li>
+</ol>
+<hr>
+<h2 id="十二、总结"><a href="#十二、总结" class="headerlink" title="十二、总结"></a>十二、总结</h2><p>这次实践最大的收获不是“AI 帮我写了一个订单系统”，而是我更清楚地理解了 AI 编程工具在真实开发流程中的位置。</p>
+<p>它可以提高效率，但不能替代工程判断。</p>
+<p>它可以生成代码，但不能自动保证系统可靠。</p>
+<p>它可以辅助测试和审查，但最终仍需要开发者理解业务链路和技术风险。</p>
+<p>我认为比较合理的使用方式是：</p>
+<blockquote>
+<p>把重复性工作交给 AI，把关键风险判断留给自己。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://lc-crypto-max.github.io/2026/05/03/%E4%BB%8E%E9%9B%B6%E4%BD%BF%E7%94%A8-Code-X-Skill-%E6%9E%84%E5%BB%BA-Spring-Boot-%E8%AE%A2%E5%8D%95%E7%B3%BB%E7%BB%9F/" data-id="cmotgi3050000h0uidlp2fnvb" data-title="从零使用 Code X + Skill 构建 Spring Boot 订单系统：一次 AI 编程实践记录" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI-%E7%BC%96%E7%A8%8B/" rel="tag">AI 编程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Code-X/" rel="tag">Code X</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Skill/" rel="tag">Skill</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-vibe-coding实战" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/" class="article-date">
@@ -674,7 +967,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI-%E5%B7%A5%E5%85%B7%E5%AE%9E%E8%B7%B5/">AI 工具实践</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li></ul>
     </div>
   </div>
 
@@ -684,7 +977,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI-%E7%BC%96%E7%A8%8B/" rel="tag">AI 编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag">AI工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Code-X/" rel="tag">Code X</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Codex/" rel="tag">Codex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Elasticsearch/" rel="tag">Elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RabbitMQ/" rel="tag">RabbitMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Skill/" rel="tag">Skill</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring-Boot/" rel="tag">Spring Boot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag">中间件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" rel="tag">后端开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" rel="tag">搜索引擎</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag">消息队列</a></li></ul>
     </div>
   </div>
 
@@ -694,7 +987,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">AI工程</a> <a href="/tags/Codex/" style="font-size: 10px;">Codex</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 10px;">后端开发</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
+      <a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">AI 编程</a> <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">AI工程</a> <a href="/tags/Code-X/" style="font-size: 10px;">Code X</a> <a href="/tags/Codex/" style="font-size: 20px;">Codex</a> <a href="/tags/Elasticsearch/" style="font-size: 10px;">Elasticsearch</a> <a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/RabbitMQ/" style="font-size: 10px;">RabbitMQ</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Skill/" style="font-size: 10px;">Skill</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" style="font-size: 10px;">中间件</a> <a href="/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" style="font-size: 20px;">后端开发</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 10px;">工程实践</a> <a href="/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/" style="font-size: 10px;">搜索引擎</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 10px;">数据库</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 10px;">消息队列</a>
     </div>
   </div>
 
@@ -703,7 +996,7 @@ get name
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li></ul>
     </div>
   </div>
 
@@ -714,6 +1007,10 @@ get name
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2026/05/03/%E4%BB%8E%E9%9B%B6%E4%BD%BF%E7%94%A8-Code-X-Skill-%E6%9E%84%E5%BB%BA-Spring-Boot-%E8%AE%A2%E5%8D%95%E7%B3%BB%E7%BB%9F/">从零使用 Code X + Skill 构建 Spring Boot 订单系统：一次 AI 编程实践记录</a>
+          </li>
         
           <li>
             <a href="/2026/04/08/vibe-coding%E5%AE%9E%E6%88%98/">vibe coding实战</a>
@@ -729,10 +1026,6 @@ get name
         
           <li>
             <a href="/2026/03/16/Redis-%E5%AD%A6%E4%B9%A0/">Redis 学习笔记</a>
-          </li>
-        
-          <li>
-            <a href="/2026/03/16/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87HEXO%E5%8D%9A%E5%AE%A2/">我的第一篇HEXO博客</a>
           </li>
         
       </ul>
