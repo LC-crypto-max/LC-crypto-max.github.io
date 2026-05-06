@@ -113,7 +113,6 @@
 <li><code>spring-boot-testing</code>：用于补充 Spring Boot 测试；</li>
 <li><code>code-reviewer</code>：用于对生成代码进行安全性、性能、结构和工程质量审查。</li>
 </ol>
-<p><img src="/images/skill-overview.png" alt="skill展示"></p>
 <hr>
 <h2 id="二、为什么要用-Codex？"><a href="#二、为什么要用-Codex？" class="headerlink" title="二、为什么要用 Codex？"></a>二、为什么要用 Codex？</h2><p>传统使用 AI 的方式，更多是“在网页里问问题，然后复制代码到本地”。这种方式虽然方便，但上下文割裂比较明显。</p>
 <p>而 Codex 更像一个本地开发 Agent，它可以在当前项目目录中：</p>
@@ -174,8 +173,8 @@
 <li><strong>Elasticsearch</strong>：订单搜索索引，不参与主交易链路。</li>
 </ul>
 <hr>
-<h2 id="六、Code-X-的使用流程"><a href="#六、Code-X-的使用流程" class="headerlink" title="六、Code X 的使用流程"></a>六、Code X 的使用流程</h2><p>这次我没有让 Code X 一次性生成完整系统，而是采用了分阶段推进的方式。</p>
-<h3 id="阶段一：生成基础下单流程"><a href="#阶段一：生成基础下单流程" class="headerlink" title="阶段一：生成基础下单流程"></a>阶段一：生成基础下单流程</h3><p>第一阶段，我让 Code X 先生成最基础的 Spring Boot 项目，包括：</p>
+<h2 id="六、CodeX-的使用流程"><a href="#六、CodeX-的使用流程" class="headerlink" title="六、CodeX 的使用流程"></a>六、CodeX 的使用流程</h2><p>这次我没有让 CodeX 一次性生成完整系统，而是采用了分阶段推进的方式。</p>
+<h3 id="阶段一：生成基础下单流程"><a href="#阶段一：生成基础下单流程" class="headerlink" title="阶段一：生成基础下单流程"></a>阶段一：生成基础下单流程</h3><p>第一阶段，我让 CodeX 先生成最基础的 Spring Boot 项目，包括：</p>
 <ul>
 <li><code>pom.xml</code></li>
 <li><code>application.yml</code></li>
@@ -197,7 +196,7 @@
 <li>下单逻辑有事务；</li>
 <li>库存不足时能够抛出业务异常。</li>
 </ul>
-<h3 id="阶段二：接入-Redis、RabbitMQ、Elasticsearch"><a href="#阶段二：接入-Redis、RabbitMQ、Elasticsearch" class="headerlink" title="阶段二：接入 Redis、RabbitMQ、Elasticsearch"></a>阶段二：接入 Redis、RabbitMQ、Elasticsearch</h3><p>基础流程跑通后，再让 Code X 逐步接入中间件：</p>
+<h3 id="阶段二：接入-Redis、RabbitMQ、Elasticsearch"><a href="#阶段二：接入-Redis、RabbitMQ、Elasticsearch" class="headerlink" title="阶段二：接入 Redis、RabbitMQ、Elasticsearch"></a>阶段二：接入 Redis、RabbitMQ、Elasticsearch</h3><p>基础流程跑通后，再让 CodeX 逐步接入中间件：</p>
 <ul>
 <li>Redis 用于缓存订单详情；</li>
 <li>RabbitMQ 用于发送订单创建事件；</li>
